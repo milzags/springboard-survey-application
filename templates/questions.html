@@ -2,13 +2,21 @@
 {% block title %}Survey Question{% endblock %}
 {% block content %}
 
-<h1>survey.questions[{{num}}].question</h1>
-<form action="/answer" method="POST">
-    {% for choice in survey.questions[{{num}}].choices %}
-    <div>
-        <input type="radio" id="{{choice}}" value="{{choice}}">
-        <label for="{{choice}}">{{choice}}</label><br>
-    </div>
-    {% endfor %}
-</form>
+{% if num < survey.questions|length %}
+    <h1>{{ survey.questions[num].question }}</h1>
+    <form action="/answer", method="POST">
+        {% for choice in survey.questions[num].choices %}
+        <div>
+            <input type="radio" id="{{ choice }}" name="choice" value="{{ choice }}">
+            <label for="{{ choice }}">{{ choice }}</label><br>
+        </div>
+        {% endfor %}
+        <button>Next</button>
+    </form>
+{% else %}
+    <form action="/complete">
+        <button>All Done!</button>
+    </form>
+
+{% endif %}
 {% endblock %}

@@ -18,18 +18,32 @@ def show_survey_information():
     """ show the user the title of the survey, the instructions and a button to start the survey """
     return render_template('survey.html',survey=current_survey)
 
-@app.route('/questions')
-def redirect_question():
+@app.route('/start')
+def redirect_to_question():
     """ start the survey, re-direct user to first question """
     return redirect('/questions/0')
 
 @app.route('/questions/<int:num>')
 def show_question(num):
+    global current_question
+    if num != current_question:
+        num = current_question
+        flash("Please answer the questions in the right order!")
+        return redirect(f'/questions/{num}')
     """show the questions one at a time """
     return render_template('questions.html', num=num, survey=current_survey)
 
-@app.route('/answer/<num>')
-def append_answer():
-    responses.append(answer)
-    flash('Answer added to database')
-    return redirect('/questions/<int:num>')
+@app.route('/answer', methods=['POST','GET'])
+def handle_answers():
+    global current_question
+    if request.method == 'POST':
+        answer = request.form['choice']
+        responses.append(answer)
+        current_question += 1
+        return render_template('questions.html', num=current_question, survey=current_survey)
+    else:
+        pass
+
+@app.route('/complete')
+def complete_survey():
+    return render_template('complete.html')
