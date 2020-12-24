@@ -2,11 +2,12 @@
 {% block title %}Survey Question{% endblock %}
 {% block content %}
 
-<h1>{{ survey.questions.question }}</h1>
+<h1>survey.questions[{{num}}].question</h1>
 <form action="/answer" method="POST">
     {% for choice in survey.questions.choices %}
     <div>
-        <input type="radio" value="{{choice}}">{{choice}}
+        <input type="radio" id="{{choice}}" value="{{choice}}">
+        <label for="{{choice}}">{{choice}}</label><br>
     </div>
     {% endfor %}
 </form>

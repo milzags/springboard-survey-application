@@ -26,7 +26,7 @@ def redirect_question():
 @app.route('/questions/<int:num>')
 def show_question(num):
     """show the questions one at a time """
-    return render_template('questions.html', num=num)
+    return render_template('questions.html', num=num, survey=current_survey)
 
 @app.route('/answer/<num>')
 def append_answer():
