@@ -25,11 +25,6 @@ def redirect_to_question():
 
 @app.route('/questions/<int:num>')
 def show_question(num):
-    global current_question
-    if num != current_question:
-        num = current_question
-        flash("Please answer the questions in the right order!")
-        return redirect(f'/questions/{num}')
     """show the questions one at a time """
     return render_template('questions.html', num=num, survey=current_survey)
 
