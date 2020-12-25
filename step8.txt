@@ -1,0 +1,7 @@
+Setp 8: Question
+Why are we changing "start survey" from sending a GET request to sending a
+POST request?
+
+A: because the session 'cookie' doesn't exist on the user client browser at 
+this point, we have to add it and then we set its k-v pairs. 
+

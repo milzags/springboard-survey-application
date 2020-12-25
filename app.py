@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from surveys import Survey, Question, surveys
 
@@ -23,6 +23,14 @@ def redirect_to_question():
     """ start the survey, re-direct user to first question """
     return redirect('/questions/0')
 
+@app.route('/start-post', methods=['POST'])
+def start_post():
+    if 'responses' not in session:
+        session['responses'] = []
+    if request.method == 'POST':
+        pass
+    return redirect('questions/0')
+
 @app.route('/questions/<int:num>')
 def show_question(num):
     """show the questions one at a time """
@@ -33,7 +41,9 @@ def handle_answers():
     global current_question
     if request.method == 'POST':
         answer = request.form['choice']
-        responses.append(answer)
+        choice_list = session['responses']
+        choice_list.append(answer)
+        session['responses'] = choice_list
         current_question += 1
         return render_template('questions.html', num=current_question, survey=current_survey)
     else:
@@ -41,4 +51,5 @@ def handle_answers():
 
 @app.route('/complete')
 def complete_survey():
+    print(session['responses'])
     return render_template('complete.html')
