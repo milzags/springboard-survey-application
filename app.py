@@ -18,18 +18,16 @@ def show_survey_information():
     """ show the user the title of the survey, the instructions and a button to start the survey """
     return render_template('survey.html',survey=current_survey)
 
-@app.route('/start')
+@app.route('/start', methods=['POST'])
 def redirect_to_question():
     """ start the survey, re-direct user to first question """
-    return redirect('/questions/0')
-
-@app.route('/start-post', methods=['POST'])
-def start_post():
+    """ but check if session storage exists, if not create it """
     if 'responses' not in session:
         session['responses'] = []
-    if request.method == 'POST':
-        pass
-    return redirect('questions/0')
+        return redirect('/questions/0')
+    else:
+        return redirect('/questions/0')
+
 
 @app.route('/questions/<int:num>')
 def show_question(num):
